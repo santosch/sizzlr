@@ -9,7 +9,7 @@ accounts, no API keys, no cloud.
 
 [![A sizzlr video: a two-voice walkthrough of a pull request](docs/demo.gif)](docs/demo.mp4)
 
-<sub>A silent teaser. [Watch the full video with sound](docs/demo.mp4).</sub>
+<sub>A silent cut of the [`tour` example](examples/tour/script.json), made from a fictional PR. [Watch the full 86-second video with sound](docs/demo.mp4).</sub>
 
 ## How it works
 
@@ -195,7 +195,7 @@ is optional.
 ## Speed and cost
 
 On four CPU cores a video renders in roughly two to three times its length: the 50-second intro
-video renders in about two and a half minutes. Speech for a 50-second script takes about 40 seconds
+video renders in about two and a half minutes, the 86-second tour in about four. Speech for a 50-second script takes about 40 seconds
 the first time and nothing on rebuilds.
 
 sizzlr itself costs nothing to run. The agent's work (reading the source and writing the script) is
