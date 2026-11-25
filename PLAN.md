@@ -72,8 +72,11 @@ Principles:
 
 - **Audio drives the timeline.** The agent never writes timestamps. Items appear `at` a line (and
   optionally a `word`) of the scene, so visuals land on the words that introduce them.
-- **The agent writes data, not HTML.** A closed set of scene types keeps videos consistent,
-  makes scripts cheap to write and easy to check, and lets the look change without touching scripts.
+- **The agent writes data first, HTML when it has to.** The catalogue's scene types keep videos
+  consistent, make scripts cheap to write and easy to check, and let the look change without
+  touching scripts. When nothing fits, or the user asks for something specific, the `custom`
+  element takes the agent's own HTML and CSS inside the same frame: captions, speakers, timing,
+  transitions and sound stay sizzlr's.
 - **Every fact comes from the source.** Code on screen is copied from the diff; numbers are not
   rounded into new meanings; UI illustrations say they are illustrations.
 - **No animation library.** Animations are data emitted as native Web Animations; counters are
@@ -167,14 +170,53 @@ Everything brand-specific; nothing company-specific ships in the package.
 | Show the product | `shot` | a real screenshot: zoom into 1-3 regions with labels | invented screens |
 | Show the product | `compare` | rules about how UI looks, before/after of layout or copy: an illustration with a verdict per panel | something you could screenshot |
 | Explain a change | `code` | the 2-6 lines of the diff that are the change | whole files |
-| Explain a flow | `chain` | ordered steps, escalations, call chains, slices | unordered lists |
+| Explain a flow | `chain` | a short straight sequence: steps, escalations, slices | unordered lists, anything that branches |
+| Explain a system | `diagram` | flowcharts, sequence diagrams, state machines, entity relations: the agent writes Mermaid, nodes and arrows appear as they are mentioned | decoration, a list that is really a sequence |
 | Explain structure | `layers` | levels that build on each other (privacy, permissions) | unrelated items |
-| Evidence | `chart` | measured values with a real gap: time, memory, size, cost; a limit line | config values, font sizes, two numbers you can just say |
+| Evidence | `chart` | measured values with a real gap: time, memory, size, cost; bars, lines or areas; a limit line | config values, font sizes, two numbers you can just say |
 | Evidence | `stats` / `checks` | 2-3 headline numbers / what was verified | more than 3 / — |
 | Decisions | `decisions` | 3-5 things a reviewer should check | trivia |
 | Scope | `chips` | what is included, 3-7 labels | — |
 | Structure | `chapter`, `todo` | videos over 2 minutes; what is next or open | short videos |
 | Ending | `outro` | where to read more | — |
+| Anything else | `custom` | no element fits, or the user asks for something specific: the agent's own HTML and CSS | restyling an element that exists |
+
+`custom` keeps the video coherent:
+
+- Elements marked `data-at="1"` (and optionally `data-word="4"`) appear when that line or word is
+  spoken, with `data-anim="pop | slide | fade | draw"`. No timestamps, same as every other element.
+- The CSS can use the theme's tokens (`var(--accent)`, `var(--good)`, ...) and is scoped to the
+  scene automatically.
+- An optional `render(t)` draws on canvas or SVG as a pure function of time (HyperFrames seeks
+  frames out of order), e.g. a packet moving through an architecture sketch.
+- Rendering blocks network requests, so agent-written HTML cannot load anything remote. The
+  snapshot check stays mandatory.
+
+### Graphs and diagrams
+
+The prototype draws charts and chains with plain HTML: bars are positioned boxes, gridlines are
+lines, chains are boxes with arrows. No dependencies, theme colours for free, fast to render, but
+limited to bars and straight sequences. The package adds:
+
+- **`diagram` with Mermaid (MIT).** Agents write Mermaid fluently. sizzlr renders it to SVG at
+  build time with the config's fonts and colours, then reveals nodes and edges in narration order.
+  Plans benefit most: a status workflow becomes a state diagram, the new tables an ER diagram.
+- **Charts as SVG with `d3-scale` and `d3-shape` (ISC).** Line and area charts and proper axes
+  without a chart framework; bars stay as simple as now.
+
+### Outputs next to every video
+
+- `video.mp4`, with chapter markers players understand.
+- `video.vtt`: subtitles from the word timings sizzlr already has.
+- `video.md`: the transcript with chapter timestamps, so a video can be skimmed and searched.
+- `video.gif` and `video.png`: a short teaser and a poster for PR comments that do not play video.
+
+### Compatibility and honesty
+
+- `script.json` carries `"version": 1`; old scripts keep rendering as elements evolve.
+- Languages: Kokoro is good in English; other languages vary, and German only exists as community
+  voices. The README says so.
+- sizzlr sends no telemetry and switches off HyperFrames' own.
 
 ## Dependencies and licences
 
@@ -184,6 +226,8 @@ Everything brand-specific; nothing company-specific ships in the package.
 | Kokoro-82M weights + kokoro-onnx (pip) | Apache-2.0 / MIT | installed by the user, not bundled; the model (~340 MB) downloads from GitHub releases on first use |
 | espeak-ng (pulled in by kokoro-onnx) | GPL-3.0 | runs in a separate process the user installs; sizzlr neither bundles nor links it |
 | Geist, Geist Mono | SIL OFL 1.1 | bundled default fonts |
+| mermaid | MIT | renders `diagram` scenes to SVG at build time |
+| d3-scale, d3-shape | ISC | chart scales and paths |
 | FFmpeg, Chrome | system | `hyperframes browser ensure` can fetch Chrome |
 
 Network on first run: npm, PyPI, GitHub releases. Hugging Face is not needed.
@@ -196,6 +240,8 @@ Network on first run: npm, PyPI, GitHub releases. Hugging Face is not needed.
    compose, scenes). Golden tests on timing; one 3-second render in CI.
 3. **Polish the elements.** Each catalogue element as its own module with a preview in an
    `examples/catalogue` script; scenes as HyperFrames sub-compositions; portrait layouts for all.
+   New: `diagram` (Mermaid), SVG charts, `custom` with its data attributes and network block.
+   Outputs: subtitles, transcript, chapter markers, poster and GIF teaser.
 4. **Skill and installers.** `skills/sizzlr/SKILL.md`, `sizzlr init` for Claude Code and Codex, the
    Claude Code plugin manifest, `npx skills add` support. Add a fact-check step to the skill: list
    every number in the script with the source line that supports it before building.
