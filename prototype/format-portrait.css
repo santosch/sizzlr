@@ -1,0 +1,32 @@
+/* 1080 x 1920 vertical short. Loaded after the theme. */
+html, body { width: 1080px; height: 1920px; }
+#root { width: 1080px; height: 1920px; }
+.chrome { height: 120px; padding: 0 56px; gap: 20px; }
+.chrome .title { display: none; }
+.chrome .ai { font-size: 22px; margin-left: auto; }
+#progress { top: 119px; width: 1080px; height: 6px; }
+.scene { top: 120px; width: 1080px; height: 1380px; padding: 0 64px; }
+.stack { gap: 48px; }
+.display { font-size: 92px; }
+.subtitle { font-size: 36px; }
+h2 { font-size: 64px; line-height: 1.1; }
+.row { flex-direction: column; gap: 24px; }
+.stat { padding: 32px 40px; display: flex; align-items: baseline; gap: 28px; }
+.stat .value { font-size: 120px; }
+.stat .label { margin-top: 0; font-size: 36px; }
+.chips { flex-direction: column; align-items: flex-start; }
+.bignum { font-size: 230px; }
+.biglabel { font-size: 46px; }
+.footnote { font-size: 28px; line-height: 1.4; }
+.chain { flex-direction: column; align-items: stretch; flex-wrap: nowrap; gap: 4px; }
+.node { font-size: 36px; padding: 18px 26px; }
+.arrow { align-self: center; font-size: 34px; line-height: 1; }
+.arrow .x { margin: -40px 0 0 -30px; font-size: 72px; }
+.chaincap { font-size: 38px; }
+.caption { left: 48px; right: 48px; bottom: 64px; height: 330px; flex-direction: column; align-items: flex-start; justify-content: center; gap: 18px; padding: 32px 40px; }
+.caption .avatar { position: absolute; top: 32px; right: 40px; width: 64px; height: 64px; font-size: 30px; }
+.caption .meta { width: 100%; }
+.caption .text { font-size: 44px; line-height: 1.28; padding-right: 20px; }
+.caption .bars { position: absolute; top: 40px; right: 128px; height: 40px; }
+.caption .bars i { height: 40px; }
+.caption .name { min-height: 64px; display: flex; align-items: center; gap: 8px; } .caption .name span { margin-left: 0; }

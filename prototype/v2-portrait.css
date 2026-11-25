@@ -1,0 +1,12 @@
+/* v2 vertical. */
+.chrome2 { left: 48px; right: 48px; }
+.chrome2 .brand { font-size: 18px; max-width: 600px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.v2 .scene { top: 90px; height: 1330px; padding: 0 60px; }
+.v2 .display { font-size: 96px; }
+.v2 h2 { font-size: 64px; }
+.punch { font-size: 120px; }
+.psub { font-size: 40px; }
+.chart { height: 760px; margin-left: 110px; }
+.bar2 { width: 110px; }
+.caption2 { left: 60px; right: 60px; bottom: 110px; }
+.caption2 .ctext { font-size: 54px; }

@@ -1,0 +1,63 @@
+{
+  "brand": {
+    "name": "sizzlr"
+  },
+  "font": {
+    "sans": {
+      "family": "Geist",
+      "file": "node_modules/geist/dist/fonts/geist-sans/Geist-Variable.woff2"
+    },
+    "mono": {
+      "family": "Geist Mono",
+      "file": "node_modules/geist/dist/fonts/geist-mono/GeistMono-Variable.woff2"
+    }
+  },
+  "colors": {
+    "light": {
+      "background": "#ffffff",
+      "surface": "#ffffff",
+      "ink": "#18181b",
+      "muted": "#6b7280",
+      "line": "#e5e7eb",
+      "accent": "#5b5bd6",
+      "second": "#3f3f46",
+      "good": "#2e8b6b",
+      "warn": "#c98a2b",
+      "bad": "#d4563f",
+      "highlight": "#fde68a"
+    },
+    "dark": {
+      "background": "#16171d",
+      "surface": "#1f2129",
+      "ink": "#eceae4",
+      "muted": "#9a98a2",
+      "line": "#2e3039",
+      "accent": "#9a98f5",
+      "second": "#4b4d5a",
+      "good": "#5cc59b",
+      "warn": "#e8b04b",
+      "bad": "#f07a62",
+      "highlight": "rgba(154, 152, 245, 0.32)"
+    }
+  },
+  "voices": [
+    {
+      "voice": "af_heart",
+      "speed": 1.2
+    },
+    {
+      "voice": "bm_george",
+      "speed": 1.15
+    }
+  ],
+  "style": {
+    "background": "flat",
+    "cameraDrift": false,
+    "soundEffects": true,
+    "disclaimer": "outro"
+  },
+  "render": {
+    "quality": "draft",
+    "fps": 30
+  }
+}

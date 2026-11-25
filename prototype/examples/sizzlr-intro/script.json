@@ -1,0 +1,71 @@
+{
+  "title": "sizzlr · plans and PRs as two-voice review videos",
+  "slug": "sizzlr-intro",
+  "source": "PLAN.md",
+  "cast": {
+    "rev": { "name": "Max", "role": "Reviewer", "tone": "dark" },
+    "auth": { "name": "Ava", "role": "Author", "tone": "blue" }
+  },
+  "scenes": [
+    {
+      "type": "punch",
+      "text": "Nobody reads the ==whole plan.==",
+      "tone": "bad",
+      "lines": [
+        { "who": "rev", "text": "Nobody reads the whole plan. Be honest." },
+        { "who": "auth", "text": "Fair. So let the plan talk instead." }
+      ]
+    },
+    {
+      "type": "chain",
+      "heading": "How it works",
+      "nodes": [
+        { "kicker": "you", "label": "Plan or PR", "at": 0 },
+        { "kicker": "your agent", "label": "script.json", "note": "who says what, which element", "at": 0, "n": 1 },
+        { "kicker": "sizzlr", "label": "Voices + scenes", "note": "local, no keys", "at": 1 },
+        { "kicker": "out", "label": "video.mp4", "tone": "accent", "at": 1, "n": 1 }
+      ],
+      "lines": [
+        { "who": "auth", "text": "Your coding agent reads the plan and writes a short script: who says what, and what's on screen." },
+        { "who": "auth", "text": "sizzlr turns it into voices, scenes and a video. Locally. No API keys." }
+      ]
+    },
+    {
+      "type": "chart",
+      "heading": "Render time for a ==40-second== video",
+      "unit": "s",
+      "categories": [
+        { "label": "Moving background", "values": [228], "tones": ["bad"], "at": 1 },
+        { "label": "Flat default", "values": [123], "tones": ["good"], "at": 1 }
+      ],
+      "stagger": 0.5,
+      "lines": [
+        { "who": "rev", "text": "And how long do I wait?" },
+        { "who": "auth", "text": "On four cores, about three times the video's length. The calm default renders almost twice as fast." }
+      ]
+    },
+    {
+      "type": "decisions",
+      "heading": "Rules it lives by",
+      "items": [
+        { "topic": "Facts", "after": "Everything on screen comes from the source", "at": 0 },
+        { "topic": "Elements", "after": "A closed catalogue, with ==never for== rules", "why": "No bar charts for font sizes", "at": 1 },
+        { "topic": "Look", "after": "One config file: fonts, colours, voices", "at": 2 }
+      ],
+      "lines": [
+        { "who": "auth", "text": "Every number on screen comes from the source." },
+        { "who": "auth", "text": "Elements come from a fixed catalogue, with rules for when not to use them.", "punch": true },
+        { "who": "auth", "text": "And one config file sets your fonts, colours and voices." }
+      ]
+    },
+    {
+      "type": "outro",
+      "title": "Let your plans ==sizzle.==",
+      "subtitle": "npx sizzlr init",
+      "stamp": "Ship it",
+      "lines": [
+        { "who": "rev", "text": "Fine. I'll watch it. Once." }
+      ]
+    }
+  ]
+}

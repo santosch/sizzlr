@@ -1,0 +1,35 @@
+/* v3: speaker dock, UI illustrations. Loaded last. */
+.shake { width: 100%; height: 100%; display: flex; align-items: center; transform-origin: 50% 50%; }
+.caption2 { left: 330px; }
+.caption2 .who { display: none; }
+.caption2 .ctext { margin-top: 0; }
+
+#dock { position: absolute; left: 70px; bottom: 44px; display: flex; gap: 18px; z-index: 5; align-items: flex-end; }
+.spk { display: flex; flex-direction: column; align-items: center; gap: 8px; transform-origin: 50% 100%; }
+.spk .face { width: 92px; height: 92px; border-radius: 50%; display: grid; place-items: center; font-size: 40px; font-weight: 700; color: #fff; background: var(--blue); box-shadow: 0 10px 26px rgba(0, 0, 0, 0.16); transform-origin: 50% 100%; }
+.spk.who-dark .face { background: var(--offblack); }
+.theme-dark .spk.who-dark .face { background: #4a5058; }
+.theme-dark .spk.who-blue .face { color: #1b1d20; }
+.spk .nm { font-size: 18px; font-weight: 600; text-align: center; line-height: 1.15; }
+.spk .nm span { display: block; font-weight: 400; color: var(--label); font-size: 15px; }
+
+.illu { font-size: 18px; color: var(--label); padding-bottom: 12px; }
+.panels { display: flex; gap: 44px; }
+.panel { flex: 1; }
+.plabel { font-size: 28px; font-weight: 600; margin-bottom: 14px; }
+.mockwin { position: relative; border: 1px solid var(--line); border-radius: 16px; background: #fff; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.1); padding: 18px 22px 22px; }
+.mock { zoom: 2; color: #18181b; font-family: "Geist", sans-serif; }
+.mrow { display: flex; align-items: center; gap: 10px; }
+.mpage { font-weight: 500; margin-bottom: 10px; }
+.mcard { border: 1px solid #e4e4e7; border-radius: 12px; padding: 14px 16px; margin-top: 4px; }
+.mctitle { font-weight: 500; letter-spacing: -0.01em; }
+.mctitle.custom { font-weight: 700; }
+.mcard i { display: block; height: 7px; border-radius: 4px; background: #ececee; margin-top: 9px; }
+.mtext { font-size: 14px; color: #787373; }
+.mbtn { display: inline-block; font-size: 13px; padding: 6px 12px; border: 1px solid #e4e4e7; border-radius: 8px; }
+.mbtn.primary { background: #2563eb; border-color: #2563eb; color: #fff; }
+.annot { font-family: "Geist Mono", monospace; font-size: 10px; color: #2563eb; background: #eff6ff; padding: 2px 6px; border-radius: 4px; white-space: nowrap; margin-bottom: 8px; }
+.annot.bad { color: #dc2626; background: #fef2f2; }
+.verdict { position: absolute; right: 22px; top: -26px; font-size: 30px; font-weight: 700; padding: 8px 18px; border-radius: 10px; border: 4px solid; background: var(--surface); }
+.verdict.tone-good { color: var(--green); border-color: var(--green); }
+.verdict.tone-bad { color: var(--red); border-color: var(--red); }

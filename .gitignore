@@ -1,0 +1,6 @@
+node_modules/
+.cache/
+**/project/
+**/snaps*/
+**/work-*/
+*.mp4
