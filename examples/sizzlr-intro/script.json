@@ -1,10 +1,11 @@
 {
-  "title": "sizzlr · plans and PRs as two-voice review videos",
-  "slug": "sizzlr-intro",
-  "source": "PLAN.md",
+  "$schema": "../../schema/script.schema.json",
+  "version": 1,
+  "title": "sizzlr: plans and PRs as two-voice review videos",
+  "source": "README.md",
   "cast": {
-    "rev": { "name": "Max", "role": "Reviewer", "tone": "dark" },
-    "auth": { "name": "Ava", "role": "Author", "tone": "blue" }
+    "rev": { "name": "Max", "role": "Reviewer" },
+    "auth": { "name": "Ava", "role": "Author" }
   },
   "scenes": [
     {
@@ -21,13 +22,22 @@
       "heading": "How it works",
       "nodes": [
         { "kicker": "you", "label": "Plan or PR", "at": 0 },
-        { "kicker": "your agent", "label": "script.json", "note": "who says what, which element", "at": 0, "n": 1 },
+        { "kicker": "your agent", "label": "script.json", "note": "who says what, which element", "at": 0 },
         { "kicker": "sizzlr", "label": "Voices + scenes", "note": "local, no keys", "at": 1 },
-        { "kicker": "out", "label": "video.mp4", "tone": "accent", "at": 1, "n": 1 }
+        { "kicker": "out", "label": "video.mp4", "tone": "accent", "at": 1 }
       ],
       "lines": [
         { "who": "auth", "text": "Your coding agent reads the plan and writes a short script: who says what, and what's on screen." },
-        { "who": "auth", "text": "sizzlr turns it into voices, scenes and a video. Locally. No API keys." }
+        { "who": "auth", "text": "sizzlr turns it into voices, scenes and a video. Locally. No API keys.", "say": "Sizzler turns it into voices, scenes and a video. Locally. No API keys." }
+      ]
+    },
+    {
+      "type": "diagram",
+      "heading": "Inside the build",
+      "mermaid": "flowchart LR\n  S[Script] --> V[Kokoro voices]\n  V --> T[Timeline]\n  T --> H[HTML scenes]\n  H --> R[HyperFrames]\n  R --> M[MP4]",
+      "lines": [
+        { "who": "rev", "text": "What actually happens in there?" },
+        { "who": "auth", "text": "Kokoro speaks every line, the timeline follows the speech, and HyperFrames renders the scenes to an MP4." }
       ]
     },
     {
@@ -56,6 +66,15 @@
         { "who": "auth", "text": "Every number on screen comes from the source." },
         { "who": "auth", "text": "Elements come from a fixed catalogue, with rules for when not to use them.", "punch": true },
         { "who": "auth", "text": "And one config file sets your fonts, colours and voices." }
+      ]
+    },
+    {
+      "type": "custom",
+      "html": "<div class=\"term\"><div class=\"bar\"><i></i><i></i><i></i></div><p data-at=\"0\">$ npx sizzlr init</p><p data-at=\"0\" data-word=\"6\" class=\"ok\">wrote .claude/skills/sizzlr/SKILL.md</p><p data-at=\"0\" data-word=\"6\" class=\"ok\">wrote .agents/skills/sizzlr/SKILL.md</p><p data-at=\"1\" data-anim=\"pop\" class=\"ask\">“Make a sizzlr video of this PR.”</p></div>",
+      "css": ".term { width: min(1100px, 100%); box-sizing: border-box; margin: 0 auto; background: var(--ink); color: var(--bg); border-radius: 18px; padding: 28px 40px 40px; font: 500 34px/1.6 var(--mono); } .bar { display: flex; gap: 10px; margin-bottom: 18px; } .bar i { width: 14px; height: 14px; border-radius: 50%; background: var(--muted); } .ok { color: var(--good); } .ask { margin-top: 24px; font-family: var(--sans); font-size: 44px; font-weight: 700; color: var(--bg); }",
+      "lines": [
+        { "who": "rev", "text": "How do I get it into my agent?" },
+        { "who": "auth", "text": "One command installs the skill for Claude Code and Codex. Then you just ask." }
       ]
     },
     {

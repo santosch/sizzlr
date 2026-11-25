@@ -1,0 +1,276 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "brand": {
+      "default": {
+        "name": "sizzlr"
+      },
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "font": {
+      "type": "object",
+      "properties": {
+        "sans": {
+          "type": "object",
+          "properties": {
+            "family": {
+              "type": "string"
+            },
+            "file": {
+              "description": "One variable font file",
+              "type": "string"
+            },
+            "files": {
+              "description": "Several static files, one per weight",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string"
+                  },
+                  "weight": {
+                    "default": "100 900",
+                    "type": [
+                      "number",
+                      "string"
+                    ]
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "family"
+          ],
+          "additionalProperties": false
+        },
+        "mono": {
+          "type": "object",
+          "properties": {
+            "family": {
+              "type": "string"
+            },
+            "file": {
+              "description": "One variable font file",
+              "type": "string"
+            },
+            "files": {
+              "description": "Several static files, one per weight",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string"
+                  },
+                  "weight": {
+                    "default": "100 900",
+                    "type": [
+                      "number",
+                      "string"
+                    ]
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "family"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "sans",
+        "mono"
+      ],
+      "additionalProperties": false
+    },
+    "colors": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "light": {
+          "type": "object",
+          "properties": {
+            "background": {
+              "type": "string"
+            },
+            "surface": {
+              "type": "string"
+            },
+            "ink": {
+              "type": "string"
+            },
+            "muted": {
+              "type": "string"
+            },
+            "line": {
+              "type": "string"
+            },
+            "accent": {
+              "type": "string"
+            },
+            "second": {
+              "type": "string"
+            },
+            "good": {
+              "type": "string"
+            },
+            "warn": {
+              "type": "string"
+            },
+            "bad": {
+              "type": "string"
+            },
+            "highlight": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "dark": {
+          "type": "object",
+          "properties": {
+            "background": {
+              "type": "string"
+            },
+            "surface": {
+              "type": "string"
+            },
+            "ink": {
+              "type": "string"
+            },
+            "muted": {
+              "type": "string"
+            },
+            "line": {
+              "type": "string"
+            },
+            "accent": {
+              "type": "string"
+            },
+            "second": {
+              "type": "string"
+            },
+            "good": {
+              "type": "string"
+            },
+            "warn": {
+              "type": "string"
+            },
+            "bad": {
+              "type": "string"
+            },
+            "highlight": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "voices": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "voice": {
+            "type": "string"
+          },
+          "speed": {
+            "default": 1.15,
+            "type": "number",
+            "minimum": 0.5,
+            "maximum": 2
+          }
+        },
+        "required": [
+          "voice"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "style": {
+      "default": {
+        "background": "flat",
+        "soundEffects": true,
+        "disclaimer": "outro"
+      },
+      "type": "object",
+      "properties": {
+        "background": {
+          "default": "flat",
+          "type": "string",
+          "enum": [
+            "flat",
+            "dots"
+          ]
+        },
+        "soundEffects": {
+          "default": true,
+          "type": "boolean"
+        },
+        "disclaimer": {
+          "default": "outro",
+          "type": "string",
+          "enum": [
+            "outro",
+            "corner",
+            "none"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "render": {
+      "default": {
+        "quality": "draft",
+        "fps": 30
+      },
+      "type": "object",
+      "properties": {
+        "quality": {
+          "default": "draft",
+          "type": "string",
+          "enum": [
+            "draft",
+            "standard",
+            "high"
+          ]
+        },
+        "fps": {
+          "default": 30,
+          "type": "integer",
+          "minimum": 12,
+          "maximum": 60
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

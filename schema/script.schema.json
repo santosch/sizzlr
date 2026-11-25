@@ -1,0 +1,1915 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "version": {
+      "default": 1,
+      "type": "number",
+      "const": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "description": "What the video is about, e.g. 'PR #123' or 'docs/plan.md'",
+      "type": "string"
+    },
+    "theme": {
+      "default": "light",
+      "type": "string",
+      "enum": [
+        "light",
+        "dark"
+      ]
+    },
+    "format": {
+      "default": "landscape",
+      "type": "string",
+      "enum": [
+        "landscape",
+        "portrait"
+      ]
+    },
+    "maxSeconds": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "cast": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "role": {
+            "type": "string"
+          },
+          "voice": {
+            "description": "Kokoro voice id; defaults come from the config",
+            "type": "string"
+          },
+          "speed": {
+            "type": "number",
+            "minimum": 0.5,
+            "maximum": 2
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "scenes": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "title"
+              },
+              "kicker": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "subtitle": {
+                "type": "string"
+              },
+              "lines": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "who": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Cast id of the speaker"
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Caption text; ==marks== are allowed and not spoken"
+                    },
+                    "say": {
+                      "description": "Spoken form when it differs from the caption, e.g. acronyms",
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "pauseAfter": {
+                      "description": "Extra pause after the line, in seconds",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 3
+                    },
+                    "punch": {
+                      "description": "Zoom and shake the scene on the line's first word",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "who",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "type",
+              "title"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "punch"
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              },
+              "tone": {
+                "type": "string",
+                "enum": [
+                  "plain",
+                  "good",
+                  "warn",
+                  "bad",
+                  "accent",
+                  "hatch"
+                ]
+              },
+              "line": {
+                "description": "Line whose words the punch text lands on",
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "sub": {
+                "type": "string"
+              },
+              "subAt": {
+                "description": "Index of the scene's line on which this appears",
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "lines": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "who": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Cast id of the speaker"
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Caption text; ==marks== are allowed and not spoken"
+                    },
+                    "say": {
+                      "description": "Spoken form when it differs from the caption, e.g. acronyms",
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "pauseAfter": {
+                      "description": "Extra pause after the line, in seconds",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 3
+                    },
+                    "punch": {
+                      "description": "Zoom and shake the scene on the line's first word",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "who",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "type",
+              "text"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "big"
+              },
+              "kicker": {
+                "type": "string"
+              },
+              "value": {
+                "type": [
+                  "number",
+                  "string"
+                ]
+              },
+              "countFrom": {
+                "type": "number"
+              },
+              "countDuration": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "prefix": {
+                "type": "string"
+              },
+              "suffix": {
+                "type": "string"
+              },
+              "tone": {
+                "type": "string",
+                "enum": [
+                  "plain",
+                  "good",
+                  "warn",
+                  "bad",
+                  "accent",
+                  "hatch"
+                ]
+              },
+              "label": {
+                "type": "string"
+              },
+              "footnote": {
+                "type": "string"
+              },
+              "at": {
+                "description": "Index of the scene's line on which this appears",
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "footnoteAt": {
+                "description": "Index of the scene's line on which this appears",
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "lines": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "who": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Cast id of the speaker"
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Caption text; ==marks== are allowed and not spoken"
+                    },
+                    "say": {
+                      "description": "Spoken form when it differs from the caption, e.g. acronyms",
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "pauseAfter": {
+                      "description": "Extra pause after the line, in seconds",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 3
+                    },
+                    "punch": {
+                      "description": "Zoom and shake the scene on the line's first word",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "who",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "type",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "chart"
+              },
+              "heading": {
+                "type": "string",
+                "minLength": 1
+              },
+              "kind": {
+                "default": "bar",
+                "type": "string",
+                "enum": [
+                  "bar",
+                  "line",
+                  "area"
+                ]
+              },
+              "unit": {
+                "type": "string"
+              },
+              "max": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "stack": {
+                "description": "Stack a category's values (bars only)",
+                "type": "boolean"
+              },
+              "series": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "tone": {
+                      "type": "string",
+                      "enum": [
+                        "plain",
+                        "good",
+                        "warn",
+                        "bad",
+                        "accent",
+                        "hatch"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "categories": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "values": {
+                      "minItems": 1,
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "labels": {
+                      "description": "Display text per value, e.g. '3,062 ms'",
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "tones": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "plain",
+                          "good",
+                          "warn",
+                          "bad",
+                          "accent",
+                          "hatch"
+                        ]
+                      }
+                    },
+                    "at": {
+                      "description": "Index of the scene's line on which this appears",
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "values"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "limit": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "number"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "at": {
+                    "description": "Index of the scene's line on which this appears",
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "value",
+                  "label"
+                ],
+                "additionalProperties": false
+              },
+              "note": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "at": {
+                    "description": "Index of the scene's line on which this appears",
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              "stagger": {
+                "type": "number",
+                "minimum": 0
+              },
+              "lines": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "who": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Cast id of the speaker"
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Caption text; ==marks== are allowed and not spoken"
+                    },
+                    "say": {
+                      "description": "Spoken form when it differs from the caption, e.g. acronyms",
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "pauseAfter": {
+                      "description": "Extra pause after the line, in seconds",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 3
+                    },
+                    "punch": {
+                      "description": "Zoom and shake the scene on the line's first word",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "who",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "type",
+              "heading",
+              "categories"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "shot"
+              },
+              "image": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Path to a PNG or JPEG, relative to the script"
+              },
+              "url": {
+                "description": "Text in the browser frame's address bar",
+                "type": "string"
+              },
+              "heading": {
+                "type": "string"
+              },
+              "focus": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "at": {
+                      "description": "Index of the scene's line on which this appears",
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "word": {
+                      "description": "Word within that line on which this appears",
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "x": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    "y": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    "w": {
+                      "type": "number",
+                      "exclusiveMinimum": 0,
+                      "maximum": 1
+                    },
+                    "h": {
+                      "type": "number",
+                      "exclusiveMinimum": 0,
+                      "maximum": 1
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "tone": {
+                      "type": "string",
+                      "enum": [
+                        "plain",
+                        "good",
+                        "warn",
+                        "bad",
+                        "accent",
+                        "hatch"
+                      ]
+                    },
+                    "zoom": {
+                      "type": "number",
+                      "minimum": 1,
+                      "maximum": 4
+                    }
+                  },
+                  "required": [
+                    "x",
+                    "y",
+                    "w",
+                    "h"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "zoomOutAt": {
+                "description": "Index of the scene's line on which this appears",
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "lines": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "who": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Cast id of the speaker"
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Caption text; ==marks== are allowed and not spoken"
+                    },
+                    "say": {
+                      "description": "Spoken form when it differs from the caption, e.g. acronyms",
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "pauseAfter": {
+                      "description": "Extra pause after the line, in seconds",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 3
+                    },
+                    "punch": {
+                      "description": "Zoom and shake the scene on the line's first word",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "who",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "type",
+              "image"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "compare"
+              },
+              "heading": {
+                "type": "string",
+                "minLength": 1
+              },
+              "panels": {
+                "minItems": 1,
+                "maxItems": 3,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "at": {
+                      "description": "Index of the scene's line on which this appears",
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "blocks": {
+                      "minItems": 1,
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "kind": {
+                                "type": "string",
+                                "const": "page"
+                              },
+                              "text": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "number",
+                                "exclusiveMinimum": 0
+                              },
+                              "annot": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "kind",
+                              "text",
+                              "size"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "kind": {
+                                "type": "string",
+                                "const": "card"
+                              },
+                              "text": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "number",
+                                "exclusiveMinimum": 0
+                              },
+                              "annot": {
+                                "type": "string"
+                              },
+                              "custom": {
+                                "type": "boolean"
+                              },
+                              "lines": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 6
+                              }
+                            },
+                            "required": [
+                              "kind",
+                              "text",
+                              "size"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "kind": {
+                                "type": "string",
+                                "const": "text"
+                              },
+                              "text": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "kind",
+                              "text"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "kind": {
+                                "type": "string",
+                                "const": "button"
+                              },
+                              "text": {
+                                "type": "string"
+                              },
+                              "primary": {
+                                "type": "boolean"
+                              }
+                            },
+                            "required": [
+                              "kind",
+                              "text"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      }
+                    },
+                    "verdicts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "text": {
+                            "type": "string"
+                          },
+                          "tone": {
+                            "type": "string",
+                            "enum": [
+                              "plain",
+                              "good",
+                              "warn",
+                              "bad",
+                              "accent",
+                              "hatch"
+                            ]
+                          },
+                          "at": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 9007199254740991
+                          }
+                        },
+                        "required": [
+                          "text",
+                          "tone",
+                          "at"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "blocks"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "lines": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "who": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Cast id of the speaker"
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Caption text; ==marks== are allowed and not spoken"
+                    },
+                    "say": {
+                      "description": "Spoken form when it differs from the caption, e.g. acronyms",
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "pauseAfter": {
+                      "description": "Extra pause after the line, in seconds",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 3
+                    },
+                    "punch": {
+                      "description": "Zoom and shake the scene on the line's first word",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "who",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "type",
+              "heading",
+              "panels"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "stats"
+              },
+              "heading": {
+                "type": "string",
+                "minLength": 1
+              },
+              "items": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "tone": {
+                      "type": "string",
+                      "enum": [
+                        "plain",
+                        "good",
+                        "warn",
+                        "bad",
+                        "accent",
+                        "hatch"
+                      ]
+                    },
+                    "at": {
+                      "description": "Index of the scene's line on which this appears",
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "value",
+                    "label"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "lines": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "who": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Cast id of the speaker"
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Caption text; ==marks== are allowed and not spoken"
+                    },
+                    "say": {
+                      "description": "Spoken form when it differs from the caption, e.g. acronyms",
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "pauseAfter": {
+                      "description": "Extra pause after the line, in seconds",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 3
+                    },
+                    "punch": {
+                      "description": "Zoom and shake the scene on the line's first word",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "who",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "type",
+              "heading",
+              "items"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "chips"
+              },
+              "heading": {
+                "type": "string",
+                "minLength": 1
+              },
+              "items": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "at": {
+                      "description": "Index of the scene's line on which this appears",
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "word": {
+                      "description": "Word within that line on which this appears",
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "label"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "lines": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "who": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Cast id of the speaker"
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Caption text; ==marks== are allowed and not spoken"
+                    },
+                    "say": {
+                      "description": "Spoken form when it differs from the caption, e.g. acronyms",
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "pauseAfter": {
+                      "description": "Extra pause after the line, in seconds",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 3
+                    },
+                    "punch": {
+                      "description": "Zoom and shake the scene on the line's first word",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "who",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "type",
+              "heading",
+              "items"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "code"
+              },
+              "heading": {
+                "type": "string",
+                "minLength": 1
+              },
+              "file": {
+                "type": "string"
+              },
+              "code": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "default": "ctx",
+                      "type": "string",
+                      "enum": [
+                        "add",
+                        "del",
+                        "ctx"
+                      ]
+                    },
+                    "text": {
+                      "type": "string"
+                    },
+                    "at": {
+                      "description": "Index of the scene's line on which this appears",
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "callouts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string"
+                    },
+                    "at": {
+                      "description": "Index of the scene's line on which this appears",
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "lines": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "who": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Cast id of the speaker"
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Caption text; ==marks== are allowed and not spoken"
+                    },
+                    "say": {
+                      "description": "Spoken form when it differs from the caption, e.g. acronyms",
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "pauseAfter": {
+                      "description": "Extra pause after the line, in seconds",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 3
+                    },
+                    "punch": {
+                      "description": "Zoom and shake the scene on the line's first word",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "who",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "type",
+              "heading",
+              "file",
+              "code"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "checks"
+              },
+              "heading": {
+                "type": "string",
+                "minLength": 1
+              },
+              "items": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "tone": {
+                      "type": "string",
+                      "enum": [
+                        "plain",
+                        "good",
+                        "warn",
+                        "bad",
+                        "accent",
+                        "hatch"
+                      ]
+                    },
+                    "at": {
+                      "description": "Index of the scene's line on which this appears",
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "sticker": {
+                      "type": "string"
+                    },
+                    "stickerAt": {
+                      "description": "Index of the scene's line on which this appears",
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "value",
+                    "label"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "lines": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "who": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Cast id of the speaker"
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Caption text; ==marks== are allowed and not spoken"
+                    },
+                    "say": {
+                      "description": "Spoken form when it differs from the caption, e.g. acronyms",
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "pauseAfter": {
+                      "description": "Extra pause after the line, in seconds",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 3
+                    },
+                    "punch": {
+                      "description": "Zoom and shake the scene on the line's first word",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "who",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "type",
+              "heading",
+              "items"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "decisions"
+              },
+              "heading": {
+                "type": "string",
+                "minLength": 1
+              },
+              "items": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "topic": {
+                      "type": "string"
+                    },
+                    "after": {
+                      "type": "string"
+                    },
+                    "why": {
+                      "type": "string"
+                    },
+                    "at": {
+                      "description": "Index of the scene's line on which this appears",
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "topic",
+                    "after"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "lines": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "who": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Cast id of the speaker"
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Caption text; ==marks== are allowed and not spoken"
+                    },
+                    "say": {
+                      "description": "Spoken form when it differs from the caption, e.g. acronyms",
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "pauseAfter": {
+                      "description": "Extra pause after the line, in seconds",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 3
+                    },
+                    "punch": {
+                      "description": "Zoom and shake the scene on the line's first word",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "who",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "type",
+              "heading",
+              "items"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "todo"
+              },
+              "heading": {
+                "type": "string",
+                "minLength": 1
+              },
+              "items": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "tag": {
+                      "type": "string"
+                    },
+                    "at": {
+                      "description": "Index of the scene's line on which this appears",
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "label"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "lines": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "who": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Cast id of the speaker"
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Caption text; ==marks== are allowed and not spoken"
+                    },
+                    "say": {
+                      "description": "Spoken form when it differs from the caption, e.g. acronyms",
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "pauseAfter": {
+                      "description": "Extra pause after the line, in seconds",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 3
+                    },
+                    "punch": {
+                      "description": "Zoom and shake the scene on the line's first word",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "who",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "type",
+              "heading",
+              "items"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "chain"
+              },
+              "heading": {
+                "type": "string",
+                "minLength": 1
+              },
+              "nodes": {
+                "minItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "kicker": {
+                      "type": "string"
+                    },
+                    "note": {
+                      "type": "string"
+                    },
+                    "tone": {
+                      "type": "string",
+                      "enum": [
+                        "plain",
+                        "good",
+                        "warn",
+                        "bad",
+                        "accent",
+                        "hatch"
+                      ]
+                    },
+                    "at": {
+                      "description": "Index of the scene's line on which this appears",
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "label"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "caption": {
+                "type": "string"
+              },
+              "captionAt": {
+                "description": "Index of the scene's line on which this appears",
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "lines": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "who": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Cast id of the speaker"
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Caption text; ==marks== are allowed and not spoken"
+                    },
+                    "say": {
+                      "description": "Spoken form when it differs from the caption, e.g. acronyms",
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "pauseAfter": {
+                      "description": "Extra pause after the line, in seconds",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 3
+                    },
+                    "punch": {
+                      "description": "Zoom and shake the scene on the line's first word",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "who",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "type",
+              "heading",
+              "nodes"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "layers"
+              },
+              "heading": {
+                "type": "string",
+                "minLength": 1
+              },
+              "items": {
+                "minItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "who": {
+                      "type": "string"
+                    },
+                    "badge": {
+                      "type": "string"
+                    },
+                    "at": {
+                      "description": "Index of the scene's line on which this appears",
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "title",
+                    "who"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "caption": {
+                "type": "string"
+              },
+              "captionAt": {
+                "description": "Index of the scene's line on which this appears",
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "lines": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "who": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Cast id of the speaker"
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Caption text; ==marks== are allowed and not spoken"
+                    },
+                    "say": {
+                      "description": "Spoken form when it differs from the caption, e.g. acronyms",
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "pauseAfter": {
+                      "description": "Extra pause after the line, in seconds",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 3
+                    },
+                    "punch": {
+                      "description": "Zoom and shake the scene on the line's first word",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "who",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "type",
+              "heading",
+              "items"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "chapter"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "hold": {
+                "default": 1.4,
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "lines": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "who": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Cast id of the speaker"
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Caption text; ==marks== are allowed and not spoken"
+                    },
+                    "say": {
+                      "description": "Spoken form when it differs from the caption, e.g. acronyms",
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "pauseAfter": {
+                      "description": "Extra pause after the line, in seconds",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 3
+                    },
+                    "punch": {
+                      "description": "Zoom and shake the scene on the line's first word",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "who",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "type",
+              "title"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "outro"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "subtitle": {
+                "type": "string"
+              },
+              "stamp": {
+                "type": "string"
+              },
+              "lines": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "who": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Cast id of the speaker"
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Caption text; ==marks== are allowed and not spoken"
+                    },
+                    "say": {
+                      "description": "Spoken form when it differs from the caption, e.g. acronyms",
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "pauseAfter": {
+                      "description": "Extra pause after the line, in seconds",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 3
+                    },
+                    "punch": {
+                      "description": "Zoom and shake the scene on the line's first word",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "who",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "type",
+              "title"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "diagram"
+              },
+              "heading": {
+                "type": "string"
+              },
+              "mermaid": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Mermaid source: flowchart, sequenceDiagram, stateDiagram-v2, erDiagram, ..."
+              },
+              "lines": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "who": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Cast id of the speaker"
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Caption text; ==marks== are allowed and not spoken"
+                    },
+                    "say": {
+                      "description": "Spoken form when it differs from the caption, e.g. acronyms",
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "pauseAfter": {
+                      "description": "Extra pause after the line, in seconds",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 3
+                    },
+                    "punch": {
+                      "description": "Zoom and shake the scene on the line's first word",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "who",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "type",
+              "mermaid"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "custom"
+              },
+              "html": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Scene markup; elements with data-at / data-word / data-anim appear as they are spoken"
+              },
+              "css": {
+                "description": "Scoped to this scene; may use the theme tokens such as var(--accent)",
+                "type": "string"
+              },
+              "render": {
+                "description": "Body of a function (t, root) called with the scene time on every frame",
+                "type": "string"
+              },
+              "lines": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "who": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Cast id of the speaker"
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Caption text; ==marks== are allowed and not spoken"
+                    },
+                    "say": {
+                      "description": "Spoken form when it differs from the caption, e.g. acronyms",
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "pauseAfter": {
+                      "description": "Extra pause after the line, in seconds",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 3
+                    },
+                    "punch": {
+                      "description": "Zoom and shake the scene on the line's first word",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "who",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "type",
+              "html"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "title",
+    "cast",
+    "scenes"
+  ],
+  "additionalProperties": false
+}

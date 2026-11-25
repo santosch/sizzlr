@@ -1,0 +1,32 @@
+/* 1080 × 1920 vertical videos. Loaded after sizzlr.css. */
+html, body, #root { width: 1080px; height: 1920px; }
+.chrome { left: 48px; right: 48px; }
+.chrome .brand { font-size: 18px; max-width: 700px; }
+.scene { top: 90px; height: 1330px; padding: 0 60px; }
+.display { font-size: 96px; }
+h2 { font-size: 64px; }
+.punch { font-size: 120px; }
+.psub { font-size: 40px; }
+.bignum { font-size: 220px; }
+.row { flex-direction: column; gap: 24px; }
+.stat { display: flex; align-items: baseline; gap: 28px; padding: 32px 40px; }
+.stat .value { font-size: 120px; }
+.stat .label { margin-top: 0; }
+.chips { flex-direction: column; align-items: flex-start; }
+.tiles { grid-template-columns: 1fr 1fr; }
+.dec { grid-template-columns: 1fr; }
+.dec .topic { grid-row: auto; }
+.chain { flex-direction: column; align-items: stretch; flex-wrap: nowrap; gap: 4px; }
+.arrow { align-self: center; line-height: 1; }
+.chapterstack { flex-direction: column; align-items: flex-start; }
+.chtitle { font-size: 96px; }
+.chart { height: 760px; margin-left: 110px; }
+.bar { width: 110px; }
+.panels { flex-direction: column; }
+.caption-line { left: 60px; right: 60px; bottom: 230px; }
+.ctext { font-size: 52px; }
+#dock { left: 60px; bottom: 70px; flex-direction: row; }
+.spk { flex-direction: row; gap: 12px; }
+.spk .face { width: 72px; height: 72px; font-size: 32px; }
+.spk .nm { text-align: left; }
+.diagram svg { max-height: 1100px !important; }

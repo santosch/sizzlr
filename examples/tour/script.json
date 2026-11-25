@@ -1,0 +1,491 @@
+{
+  "$schema": "../../schema/script.schema.json",
+  "version": 1,
+  "title": "Cache search results at the edge",
+  "source": "PR #42",
+  "maxSeconds": 150,
+  "cast": {
+    "rev": {
+      "name": "Max",
+      "role": "Reviewer"
+    },
+    "auth": {
+      "name": "Ava",
+      "role": "Author"
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "kicker": "PR #42",
+      "title": "Cache search results ==at the edge==",
+      "subtitle": "A tour of every sizzlr element",
+      "lines": [
+        {
+          "who": "rev",
+          "text": "Pull request forty-two. Search, again?"
+        },
+        {
+          "who": "auth",
+          "text": "Search, finally fast. Give me two minutes."
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "title": "Why"
+    },
+    {
+      "type": "big",
+      "kicker": "p95 search response",
+      "value": 1840,
+      "countFrom": 0,
+      "suffix": " ms",
+      "tone": "bad",
+      "label": "the slowest page in the app",
+      "lines": [
+        {
+          "who": "auth",
+          "text": "Search is our slowest page. The p95 is over eighteen hundred milliseconds."
+        }
+      ]
+    },
+    {
+      "type": "stats",
+      "heading": "Why it matters",
+      "items": [
+        {
+          "value": "38%",
+          "label": "of all API traffic is search",
+          "at": 0
+        },
+        {
+          "value": "1.8 s",
+          "label": "p95 before this PR",
+          "tone": "bad",
+          "at": 1
+        }
+      ],
+      "lines": [
+        {
+          "who": "rev",
+          "text": "And it's thirty-eight percent of all our API traffic."
+        },
+        {
+          "who": "auth",
+          "text": "So every slow search is a lot of slow searches."
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "title": "What changes"
+    },
+    {
+      "type": "code",
+      "heading": "Check the edge cache first",
+      "file": "search/handler.ts",
+      "code": [
+        {
+          "kind": "ctx",
+          "text": "export const search = async (query: Query) => {"
+        },
+        {
+          "kind": "add",
+          "text": "  const key = cacheKey(query.text, query.locale);",
+          "at": 0
+        },
+        {
+          "kind": "add",
+          "text": "  const hit = await edge.get(key);",
+          "at": 0
+        },
+        {
+          "kind": "add",
+          "text": "  if (hit) return hit;",
+          "at": 0
+        },
+        {
+          "kind": "ctx",
+          "text": "  const results = await db.search(query);"
+        },
+        {
+          "kind": "add",
+          "text": "  await edge.set(key, results, { ttl: 60 });",
+          "at": 1
+        },
+        {
+          "kind": "ctx",
+          "text": "  return results;"
+        },
+        {
+          "kind": "ctx",
+          "text": "};"
+        }
+      ],
+      "callouts": [
+        {
+          "text": "60 s per query and locale",
+          "at": 1
+        }
+      ],
+      "lines": [
+        {
+          "who": "auth",
+          "text": "The handler checks the edge cache before it touches the database."
+        },
+        {
+          "who": "auth",
+          "text": "Results stay cached for sixty seconds, per query and locale."
+        }
+      ]
+    },
+    {
+      "type": "chips",
+      "heading": "Cache key",
+      "items": [
+        {
+          "label": "query text",
+          "at": 0,
+          "word": 3
+        },
+        {
+          "label": "locale",
+          "at": 0,
+          "word": 5
+        }
+      ],
+      "lines": [
+        {
+          "who": "rev",
+          "text": "So the key is query text plus locale?"
+        },
+        {
+          "who": "auth",
+          "text": "Yes. Results are translated, so the locale has to be in it."
+        }
+      ]
+    },
+    {
+      "type": "shot",
+      "image": "assets/search.png",
+      "url": "shelf.example/search",
+      "heading": "A ==freshness hint==",
+      "focus": [
+        {
+          "at": 0,
+          "word": 3,
+          "x": 0.76,
+          "y": 0.19,
+          "w": 0.16,
+          "h": 0.06,
+          "label": "new",
+          "tone": "good",
+          "zoom": 1.8
+        }
+      ],
+      "zoomOutAt": 1,
+      "lines": [
+        {
+          "who": "auth",
+          "text": "The results page now says updated just now when results are fresh."
+        },
+        {
+          "who": "rev",
+          "text": "Small, but people will trust it more."
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "heading": "Results header",
+      "panels": [
+        {
+          "label": "Before",
+          "at": 0,
+          "blocks": [
+            {
+              "kind": "text",
+              "text": "128 results"
+            },
+            {
+              "kind": "card",
+              "text": "Ridge Runner 3",
+              "size": 22,
+              "lines": 2
+            },
+            {
+              "kind": "card",
+              "text": "Granite TR",
+              "size": 22,
+              "lines": 2
+            }
+          ],
+          "verdicts": [
+            {
+              "text": "How old?",
+              "tone": "warn",
+              "at": 0
+            }
+          ]
+        },
+        {
+          "label": "After",
+          "at": 1,
+          "blocks": [
+            {
+              "kind": "text",
+              "text": "128 results \u00b7 Updated just now"
+            },
+            {
+              "kind": "card",
+              "text": "Ridge Runner 3",
+              "size": 22,
+              "lines": 2
+            },
+            {
+              "kind": "card",
+              "text": "Granite TR",
+              "size": 22,
+              "lines": 2
+            }
+          ],
+          "verdicts": [
+            {
+              "text": "Fresh",
+              "tone": "good",
+              "at": 1
+            }
+          ]
+        }
+      ],
+      "lines": [
+        {
+          "who": "rev",
+          "text": "Before, you couldn't tell how old the results were."
+        },
+        {
+          "who": "auth",
+          "text": "Now the header says it, right next to the count."
+        }
+      ]
+    },
+    {
+      "type": "layers",
+      "heading": "Who answers a search",
+      "items": [
+        {
+          "title": "Edge cache",
+          "who": "71% of searches",
+          "badge": "new",
+          "at": 0
+        },
+        {
+          "title": "Database",
+          "who": "the rest",
+          "at": 1
+        }
+      ],
+      "caption": "Writes purge the cached queries that contain the item",
+      "captionAt": 2,
+      "lines": [
+        {
+          "who": "auth",
+          "text": "Now seventy-one percent of searches never reach the database."
+        },
+        {
+          "who": "auth",
+          "text": "The rest go through as before."
+        },
+        {
+          "who": "rev",
+          "text": "And when an item changes?"
+        },
+        {
+          "who": "auth",
+          "text": "Writes purge every cached query that contains it."
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "title": "Results"
+    },
+    {
+      "type": "chart",
+      "kind": "line",
+      "heading": "p95 on staging, one week",
+      "unit": "ms",
+      "series": [
+        {
+          "name": "before",
+          "tone": "bad"
+        },
+        {
+          "name": "after",
+          "tone": "good"
+        }
+      ],
+      "categories": [
+        {
+          "label": "Mon",
+          "values": [
+            1840,
+            420
+          ]
+        },
+        {
+          "label": "Tue",
+          "values": [
+            1790,
+            380
+          ]
+        },
+        {
+          "label": "Wed",
+          "values": [
+            1900,
+            310
+          ]
+        },
+        {
+          "label": "Thu",
+          "values": [
+            1860,
+            290
+          ]
+        },
+        {
+          "label": "Fri",
+          "values": [
+            1820,
+            300
+          ]
+        }
+      ],
+      "note": {
+        "text": "about 6x faster",
+        "at": 1
+      },
+      "lines": [
+        {
+          "who": "auth",
+          "text": "A week on staging. Before, around eighteen hundred milliseconds."
+        },
+        {
+          "who": "auth",
+          "text": "After, around three hundred."
+        },
+        {
+          "who": "rev",
+          "text": "Okay, that's a real difference."
+        }
+      ]
+    },
+    {
+      "type": "checks",
+      "heading": "Checks",
+      "items": [
+        {
+          "value": "214",
+          "label": "unit tests passed",
+          "tone": "good",
+          "at": 0
+        },
+        {
+          "value": "2x",
+          "label": "peak load test passed",
+          "tone": "good",
+          "at": 1
+        },
+        {
+          "value": "0",
+          "label": "stale results in 10,000 writes",
+          "tone": "good",
+          "at": 2,
+          "sticker": "the scary one",
+          "stickerAt": 2
+        }
+      ],
+      "lines": [
+        {
+          "who": "auth",
+          "text": "Two hundred fourteen unit tests pass."
+        },
+        {
+          "who": "auth",
+          "text": "A load test at twice the peak passes."
+        },
+        {
+          "who": "rev",
+          "text": "And stale results after a write? Zero, in ten thousand writes."
+        }
+      ]
+    },
+    {
+      "type": "decisions",
+      "heading": "Decisions",
+      "items": [
+        {
+          "topic": "TTL",
+          "after": "60 seconds, not 5 minutes",
+          "why": "Prices have to be current",
+          "at": 0
+        },
+        {
+          "topic": "Key",
+          "after": "Includes the locale",
+          "why": "Results are translated",
+          "at": 1
+        }
+      ],
+      "lines": [
+        {
+          "who": "rev",
+          "text": "Why only sixty seconds?"
+        },
+        {
+          "who": "auth",
+          "text": "Product wants prices current. And the locale is in the key because results are translated."
+        }
+      ]
+    },
+    {
+      "type": "todo",
+      "heading": "Follow-ups",
+      "items": [
+        {
+          "label": "Warm the 100 most common queries after a deploy",
+          "tag": "next",
+          "at": 0
+        },
+        {
+          "label": "Add a cache dashboard",
+          "at": 1
+        }
+      ],
+      "lines": [
+        {
+          "who": "auth",
+          "text": "Next, we warm the hundred most common queries after each deploy."
+        },
+        {
+          "who": "auth",
+          "text": "And we add a cache dashboard."
+        }
+      ]
+    },
+    {
+      "type": "outro",
+      "title": "Search, ==six times faster.==",
+      "subtitle": "PR #42 \u00b7 ready for review",
+      "stamp": "Approved",
+      "lines": [
+        {
+          "who": "rev",
+          "text": "Approved. Ship it."
+        }
+      ]
+    }
+  ]
+}

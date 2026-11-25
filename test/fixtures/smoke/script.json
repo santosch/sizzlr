@@ -1,0 +1,8 @@
+{
+  "title": "Smoke test",
+  "cast": { "a": { "name": "Ava" }, "b": { "name": "Max" } },
+  "scenes": [
+    { "type": "punch", "text": "It ==renders.==", "lines": [{ "who": "a", "text": "It renders." }] },
+    { "type": "outro", "title": "Done", "lines": [{ "who": "b", "text": "Good." }] }
+  ]
+}

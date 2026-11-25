@@ -1,0 +1,11 @@
+{
+  "name": "sizzlr",
+  "owner": { "name": "Sebastian Antosch", "email": "write@sebastian-antosch.de" },
+  "plugins": [
+    {
+      "name": "sizzlr",
+      "source": "./",
+      "description": "Turn plans and pull requests into two-voice narrated review videos, rendered locally with no API keys."
+    }
+  ]
+}

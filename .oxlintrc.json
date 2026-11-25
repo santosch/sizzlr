@@ -1,0 +1,5 @@
+{
+  "categories": { "correctness": "error", "suspicious": "warn" },
+  "rules": { "no-unused-vars": "error", "eqeqeq": "error", "prefer-const": "error" },
+  "ignorePatterns": ["dist", "prototype", "examples/**/project"]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "sizzlr",
+  "description": "Turn plans and pull requests into two-voice narrated review videos, rendered locally with no API keys.",
+  "version": "0.1.0",
+  "author": { "name": "Sebastian Antosch", "email": "write@sebastian-antosch.de" },
+  "homepage": "https://github.com/santosch/sizzlr",
+  "repository": "https://github.com/santosch/sizzlr",
+  "license": "MIT",
+  "keywords": ["video", "pull-request", "plan", "review", "tts"]
+}

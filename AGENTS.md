@@ -4,17 +4,23 @@ sizzlr turns plans and pull requests into short narrated review videos: two voic
 scenes, real code and real numbers, rendered locally with no API keys. It ships as an npm package
 (engine + CLI) with a thin agent skill on top, for Claude Code and Codex alike.
 
-Read `PLAN.md` first: it is the design, the decisions and the milestones. `prototype/` is the
-working spike the plan is based on; port from it, don't treat it as the target structure.
+Read `PLAN.md` first: it is the design, the decisions and the milestones.
 
 ## Status
 
-- `PLAN.md` and `prototype/` are done. Next is milestone 1 (TypeScript scaffold, zod schemas for
-  `script.json` and `sizzlr.config.json`, CLI skeleton, CI), then milestone 2 (port the engine).
-- Voices move from the prototype's Python path (`hyperframes tts`, kokoro-onnx) to `kokoro-js` in
-  Node. Verify first that the Kokoro model downloads in this environment (Hugging Face: see
-  Environment below).
-- The npm name `sizzlr` is free but not reserved yet: publish a `0.0.1` placeholder early.
+- Milestones 1-4 of `PLAN.md` are done: the package, engine, every catalogue element (including
+  `diagram` and `custom`), outputs, CLI, skill, installers, CI, README and examples.
+- Next: milestone 5 (dogfood on real PRs and plans) and publishing 0.1 to npm.
+
+## Layout
+
+- `src/cli.ts` is the entry point; `src/build.ts` runs speech, timeline, compose and render.
+- `src/script.ts` and `src/config.ts` hold the zod schemas; `schema/` is generated from them with
+  `node src/cli.ts schema --out schema` (CI fails when it is stale).
+- `src/scenes/` has one renderer per element, registered in `src/scenes/registry.ts`.
+- `runtime/player.js` runs inside the page: animations, counters, Mermaid, custom scenes.
+- `styles/` is the page CSS (tokens only, no literal colours); `skills/sizzlr/SKILL.md` is the
+  agent skill that `sizzlr init` installs.
 
 ## Decisions that are settled (don't reopen without being asked)
 
@@ -57,9 +63,10 @@ TypeScript, ESM, Node 22+.
 
 ## Working habits
 
-- Before rendering, build and look at a snapshot contact sheet
-  (`hyperframes snapshot <project> --at …`): nothing overlapping or cut off, every scene showing its
-  element while it is talked about. Then render.
+- Run the CLI from source with `node src/cli.ts …` (Node 24 strips the types).
+- Before rendering, look at a contact sheet (`node src/cli.ts snapshot examples/tour`): nothing
+  overlapping or cut off, every scene showing its element while it is talked about. Then render.
+- `npm run check` runs typecheck, lint and tests.
 - Share videos and snapshots with the user as soon as they exist; don't batch them up.
 - Measure instead of guessing: render times, lengths, costs.
 - Rendering is frame-by-frame seeking in headless Chrome, so cost per frame is what matters.
@@ -70,8 +77,10 @@ TypeScript, ESM, Node 22+.
 ## Environment
 
 - Always run HyperFrames with `DO_NOT_TRACK=1` (it sends usage telemetry by default).
-- Node's built-in `fetch` ignores `HTTPS_PROXY` unless `NODE_USE_ENV_PROXY=1` is set; tools that
-  download through `fetch` need it behind a proxy.
+- Node's built-in `fetch` ignores `HTTPS_PROXY`; the CLI installs undici's `EnvHttpProxyAgent`
+  when a proxy is set, so the model download works behind one.
+- `onnxruntime-node` tries to download CUDA binaries on Linux x64 during install; the repo's
+  `.npmrc` skips that (`ONNXRUNTIME_NODE_INSTALL_CUDA=skip` does the same elsewhere).
 - Voice model downloads come from Hugging Face: `huggingface.co`, `*.hf.co`,
   `cdn-lfs.huggingface.co` must be reachable.
 - Chrome and FFmpeg are expected on the system; `npx hyperframes doctor` checks both.

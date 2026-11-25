@@ -239,28 +239,26 @@ Network on first run: npm, and Hugging Face for the voice model (`huggingface.co
 
 ## Milestones
 
+Milestones 1-4 are done; 5 and 6 are next.
+
 1. **Scaffold.** TypeScript package, zod schemas for script and config, CLI skeleton, CI (lint,
    typecheck, schema tests). Reserve the npm name with a `0.0.1` placeholder.
 2. **Port the engine.** Bring `prototype/build.mjs` over as typed modules (tts, timeline, animate,
    compose, scenes). Golden tests on timing; one 3-second render in CI.
-3. **Polish the elements.** Each catalogue element as its own module with a preview in an
-   `examples/catalogue` script; scenes as HyperFrames sub-compositions; portrait layouts for all.
-   New: `diagram` (Mermaid), SVG charts, `custom` with its data attributes and network block.
-   Outputs: subtitles, transcript, chapter markers, poster and GIF teaser.
+3. **Polish the elements.** Each catalogue element as its own renderer, all of them exercised by
+   `examples/tour`; portrait layouts for all. New: `diagram` (Mermaid), SVG line and area charts,
+   `custom` with its data attributes and network block. Outputs: subtitles, transcript, chapter
+   markers, poster and GIF teaser.
 4. **Skill and installers.** `skills/sizzlr/SKILL.md`, `sizzlr init` for Claude Code and Codex, the
    Claude Code plugin manifest, `npx skills add` support. Add a fact-check step to the skill: list
    every number in the script with the source line that supports it before building.
 5. **Dogfood.** Five real PRs and two plans from different repos; tune the catalogue and the skill
    from what goes wrong.
 6. **Publish 0.1.** README with a demo video, docs for config and elements, npm publish.
-7. **Later.** Screen recordings of the running app as a scene (Playwright), word-level timings from
-   a timestamped TTS model (karaoke captions), code morphing (diffreel or similar), GIF teaser plus
-   MP4 for PR comments, distributed rendering (HyperFrames on Lambda or Cloud Run) for 10-minute
-   videos, optional cloud voices behind a flag.
 
 ## Open questions
 
-- Public on npm under `sizzlr`, or a scope?
 - Default style: dialogue for everything, infomercial only on request?
-- Should `sizzlr` fetch PRs itself (`sizzlr pr 123` via `gh`), or always leave reading to the agent?
 - Where should videos land for PRs: a comment (needs hosting), an artifact, or just a file?
+
+Settled: published unscoped as `sizzlr`; reading PRs is left to the agent (no `sizzlr pr`).

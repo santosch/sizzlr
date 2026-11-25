@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  ONNXRUNTIME_NODE_INSTALL_CUDA: skip
+  DO_NOT_TRACK: "1"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+      - name: Schemas are up to date
+        run: node dist/cli.js schema --out schema && git diff --exit-code schema
+      - run: npm pack --dry-run
+
+  render:
+    runs-on: ubuntu-latest
+    needs: check
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: npm ci
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/sizzlr
+          key: sizzlr-${{ hashFiles('package-lock.json') }}
+      - name: Render a short video
+        run: node src/cli.ts render test/fixtures/smoke
+      - name: Check the outputs
+        run: |
+          for f in smoke.mp4 smoke.vtt smoke.transcript.md smoke.png smoke.gif; do test -s "test/fixtures/smoke/$f"; done
+          ffprobe -v error -show_entries format=duration -of csv=p=0 test/fixtures/smoke/smoke.mp4
