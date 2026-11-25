@@ -94,7 +94,7 @@ sizzlr/
     cli.ts                  init | doctor | voices | lint | build | snapshot | render | skill
     config.ts               sizzlr.config.json: load, defaults, validate (zod)
     schema.ts               script.json schema (zod), also emitted as JSON Schema for agents
-    tts.ts                  Kokoro through `hyperframes tts`, cache, silence trimming, word timing
+    tts.ts                  Kokoro through kokoro-js (Node, ONNX), cache, silence trimming, word timing
     timeline.ts             line, word and scene timing
     animate.ts              animation data -> Web Animations script; counters via hf-seek
     compose.ts              page: scenes, captions, speakers, audio, sound effects, fit-to-frame
@@ -114,7 +114,7 @@ sizzlr/
 | Command | Does |
 | --- | --- |
 | `sizzlr init` | writes `sizzlr.config.json` and installs the skill for Claude Code (`.claude/skills/sizzlr/`) and Codex (`.agents/skills/sizzlr/`); `--global` for the personal folders |
-| `sizzlr doctor` | checks Node, FFmpeg, Chrome, Python + kokoro-onnx, the voice model; prints the one command that fixes each |
+| `sizzlr doctor` | checks Node, FFmpeg, Chrome and the voice model download; prints the one command that fixes each |
 | `sizzlr voices` | lists voices with a quality hint |
 | `sizzlr lint <dir>` | schema errors, unknown fields, estimated length vs target, overlong lines, catalogue rules |
 | `sizzlr build <dir>` | voices + project; prints the length; warns when over the target |
@@ -223,14 +223,19 @@ limited to bars and straight sequences. The package adds:
 | Dependency | Licence | Note |
 | --- | --- | --- |
 | hyperframes | Apache-2.0 | pinned exactly; sends usage telemetry by default, so sizzlr always sets `DO_NOT_TRACK=1` |
-| Kokoro-82M weights + kokoro-onnx (pip) | Apache-2.0 / MIT | installed by the user, not bundled; the model (~340 MB) downloads from GitHub releases on first use |
-| espeak-ng (pulled in by kokoro-onnx) | GPL-3.0 | runs in a separate process the user installs; sizzlr neither bundles nor links it |
+| kokoro-js, @huggingface/transformers | Apache-2.0 | voices in Node, no Python; onnxruntime-node underneath is MIT |
+| Kokoro-82M weights and voices | Apache-2.0 | downloaded from Hugging Face on first use, cached; may be mirrored in a sizzlr release later |
+| phonemizer (used by kokoro-js) | labelled Apache-2.0, contains eSpeak NG (GPL-3.0) compiled to WebAssembly | accepted: sizzlr stays MIT, the README states that the voice pipeline uses eSpeak NG under GPL-3.0, and that redistributing sizzlr bundled with it means following the GPL for that bundle. Using sizzlr as a CLI is unaffected. Check the licence files in phonemizer before publishing |
 | Geist, Geist Mono | SIL OFL 1.1 | bundled default fonts |
 | mermaid | MIT | renders `diagram` scenes to SVG at build time |
 | d3-scale, d3-shape | ISC | chart scales and paths |
-| FFmpeg, Chrome | system | `hyperframes browser ensure` can fetch Chrome |
+| FFmpeg, Chrome | system | called as separate programs, never bundled (no `ffmpeg-static`, which is GPL-3.0); `hyperframes browser ensure` can fetch Chrome |
 
-Network on first run: npm, PyPI, GitHub releases. Hugging Face is not needed.
+sizzlr itself is MIT. All dependencies above are MIT-compatible; the eSpeak NG note is the only
+copyleft component, and it is disclosed rather than avoided.
+
+Network on first run: npm, and Hugging Face for the voice model (`huggingface.co`, `*.hf.co`,
+`cdn-lfs.huggingface.co`). No Python, no PyPI.
 
 ## Milestones
 
